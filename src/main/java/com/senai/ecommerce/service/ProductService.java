@@ -32,7 +32,18 @@ public class ProductService {
         return productToProductDTO(savedProduct);
     }
 
+    @Transactional
+    public ProductDTO update (Long id, ProductDTO productDTO){
+        Product product = productDTOToProduct(productDTO);
+        product.setId(id);
+        product =productRepository.save(product);
+        return productDTO;
+    }
 
+    @Transactional
+    public void delete(Long id){
+        productRepository.deleteById(id);
+    }
 
     public ProductDTO productToProductDTO(Product product) {
         ProductDTO productDTO = new ProductDTO();
@@ -55,10 +66,10 @@ public class ProductService {
         return product;
     }
 
-//    private ProductDTO toDTO(Product product) {
-//        return new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getPrice(), product.getImgUrl(), product.getCategories());
-//    }
-//    private Product toEntity(ProductDTO productDTO) {
-//        return new Product(productDTO.getName(), productDTO.getDescription(), productDTO.getPrice(), productDTO.getImgUrl(), productDTO.getCategories());
-//    }
+    private ProductDTO toDTO(Product product) {
+        return new ProductDTO(product.getId(), product.getName(), product.getDescription(), product.getPrice(), product.getImgUrl(), product.getCategories());
+    }
+    private Product toEntity(ProductDTO productDTO) {
+        return new Product(productDTO.getName(), productDTO.getDescription(), productDTO.getPrice(), productDTO.getImgUrl(), productDTO.getCategories());
+    }
 }
